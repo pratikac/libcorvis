@@ -12,6 +12,9 @@ include(UseJava)
 set(CMAKE_JAVA_COMPILE_FLAGS ${CMAKE_JAVA_COMPILE_FLAGS} -source 6 -target 6)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wreturn-type -Wuninitialized -Wunused-variable")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mmmx -msse -msse -msse2 -msse3 -mssse3")
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS} -O3 -fsee -fomit-frame-pointer -fno-signed-zeros -fno-math-errno -funroll-loops")
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 # pods.cmake has many convenience macros for
@@ -29,5 +32,31 @@ endif()
 # install nucore-spy
 include(cmake/spy.cmake)
 install_nucore_spy()
+
+
+# find vision libraries
+find_package(OpenCV REQUIRED)
+find_package(Eigen REQUIRED)
+find_package(Sophus REQUIRED)
+find_package(fast REQUIRED)
+find_package(Boost REQUIRED COMPONENTS thread system)
+find_package(vikit_common REQUIRED)
+
+# include dirs
+include_directories(
+  ${Eigen_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
+  ${Sophus_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+  ${fast_INCLUDE_DIRS}
+)
+
+# set link libraries
+link_directories( 
+  ${OpenCV_LIBS}
+  ${Sophus_LIBRARIES}
+  ${Boost_LIBRARIES}
+  ${fast_LIBRARIES}
+)
 
 add_subdirectory(src)
