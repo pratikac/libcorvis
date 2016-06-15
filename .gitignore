@@ -1,0 +1,37 @@
+# cmake
+build/
+pod-build/
+externals/
+
+# python
+*.pyc
+*.pyo
+
+# latex
+*.synctex.gz
+*.out
+*.log
+*.bbl
+*.blg
+*.aux
+*.fdb_latexmk
+*.fls
+
+# python build_prefix.py
+build_prefix.py
+
+# editors
+
+# vim
+*.swp
+
+# eclipse
+.project
+.cproject
+.settings
+
+# eclipse-pydev
+.pydevproject
+
+# gedit
+*~
