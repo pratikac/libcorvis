@@ -1,7 +1,6 @@
 # cmake
 build/
 pod-build/
-externals/
 
 # python
 *.pyc
