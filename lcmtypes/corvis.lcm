@@ -1,0 +1,34 @@
+package corvis;
+
+/*
+    X axis points forward, Y is to the left,
+    and Z axis points up from the platform.
+*/
+struct pose_t
+{
+    int64_t utime;
+
+    double pos[3];          // m, (x,y,z) in local frame
+    double vel[3];          // m/s body frame
+    double accel[3];        // m/s^2 body frame
+
+    double quat[4];         // local frame 
+
+    double omega[3];        // rad/s
+}
+
+struct rigid_transform_t
+{
+    int64_t utime;
+
+    double pos[3];
+    double quat[4];
+}
+
+struct twist_t
+{
+    int64_t utime;
+    
+    double vel[3];
+    double omega[3];
+}
