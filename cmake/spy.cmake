@@ -1,4 +1,4 @@
-macro(install_nucore_spy)
+macro(install_corvis_spy)
     file(WRITE "${CMAKE_BINARY_DIR}/corvis-spy.sh" "java -cp \"$CORVIS/build/share/java/*\" lcm.spy.Spy $*")
     file(INSTALL "${CMAKE_BINARY_DIR}/corvis-spy.sh"
         DESTINATION "${CMAKE_INSTALL_PREFIX}/bin"
