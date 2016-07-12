@@ -14,4 +14,55 @@ struct ins_t
     double rel_alt;
 }
 
+struct image_type_t
+{
+    const int8_t RGB8 = 1;
+    const int8_t RGB16 = 2;
+    const int8_t BGR8 = 3;
+    const int8_t BGR16 = 4;
+    const int8_t YUV411 = 5;
+    const int8_t YUV422 = 6;
+    const int8_t YUV444 = 7;
+    const int8_t JPEG = 8;
+    const int8_t MONO8 = 9;
+    const int8_t MONO16 = 10;
+    const int8_t PNG = 11;
+    int8_t enumerate;
+}
 
+struct image_t
+{
+    int64_t utime;
+    int64_t device_utime;
+    string coord_frame;
+
+    int32_t width;
+    int32_t height;
+
+    int32_t size;
+    byte data[size];
+
+    image_type_t type;
+}
+
+struct lens_type_t
+{
+    const int8_t normal = 1;
+    const int8_t fisheye = 2;
+}
+
+struct calibration_matrix_t
+{
+    int64_t utime;
+
+    lens_type_t lens_type;
+
+    // 3x3 calibration matrix for the pinhole model
+    // in row-major form
+    double K[9];
+
+    // radial distortion parameters
+    // these can be zero if not calibrated
+    // theta' = theta(1 + k1*theta^2 + k2*theta^4 + k3*theta^6 + k4*theta^8)
+    double radial[4];
+}

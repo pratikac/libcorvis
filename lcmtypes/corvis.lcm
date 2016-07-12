@@ -32,3 +32,31 @@ struct twist_t
     double vel[3];
     double omega[3];
 }
+
+struct point_flag_t
+{
+    const int8_t evaluating = 1;
+    const int8_t tracked = 2;
+    const int8_t dropped = 3;
+}
+
+// this is used to keep a variable third field in the
+// pointcloud_t message below. Depending upon the pointcloud_type_t
+// here, the third field can be any of the following quantities
+struct pointcloud_type_t
+{
+    const int8_t    xyz = 1;        // z (for 3D points)
+    const int8_t    xyd = 2;        // depth
+    const int8_t    xyth = 3;       // image plane + orientation (e.g., keypoints)
+    const int8_t    xyf = 4;        // active / in-active flags, see point_flag_t
+}
+
+struct pointcloud_t
+{
+    int64_t utime;
+
+    int32_t size;
+    double points[size][3];
+
+    pointcloud_type_t type;
+}
