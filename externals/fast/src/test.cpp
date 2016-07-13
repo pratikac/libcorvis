@@ -2,7 +2,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <opencv2/opencv.hpp>
-#include <fast/fast.h>
+#include "fast.h"
 
 int main (int argc, char * argv[]) {
    const int n_trials = 1000;

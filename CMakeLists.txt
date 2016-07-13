@@ -39,21 +39,8 @@ install_corvis_spy()
 
 # find vision libraries
 find_package(OpenCV REQUIRED)
-find_package(Eigen REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread system)
-
-# include dirs
-include_directories(
-  ${Eigen_INCLUDE_DIRS}
-  ${OpenCV_INCLUDE_DIRS}
-  ${Boost_INCLUDE_DIRS}
-)
-
-# set link libraries
-link_directories( 
-  ${OpenCV_LIBS}
-  ${Boost_LIBRARIES}
-)
 
 add_subdirectory(src)
 add_subdirectory(externals)

@@ -45,6 +45,13 @@ struct image_t
     image_type_t type;
 }
 
+struct model_type_t
+{
+    const int8_t pinhole = 1;
+    const int8_t atan = 2;      // model of preference
+    const int8_t ocam = 3;      // for high FOV cameras
+}
+
 struct lens_type_t
 {
     const int8_t normal = 1;
@@ -54,7 +61,8 @@ struct lens_type_t
 struct calibration_matrix_t
 {
     int64_t utime;
-
+    
+    model_type_t model_type;
     lens_type_t lens_type;
 
     // 3x3 calibration matrix for the pinhole model
