@@ -15,10 +15,10 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <stdexcept>
-#include <svo/frame.h>
-#include <svo/feature.h>
-#include <svo/point.h>
-#include <svo/config.h>
+#include "frame.h"
+#include "feature.h"
+#include "point.h"
+#include "config.h"
 #include <boost/bind.hpp>
 #include <vikit/math_utils.h>
 #include <vikit/vision.h>

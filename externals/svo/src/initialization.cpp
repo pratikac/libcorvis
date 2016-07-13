@@ -14,12 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <svo/config.h>
-#include <svo/frame.h>
-#include <svo/point.h>
-#include <svo/feature.h>
-#include <svo/initialization.h>
-#include <svo/feature_detection.h>
+#include "config.h"
+#include "frame.h"
+#include "point.h"
+#include "feature.h"
+#include "initialization.h"
+#include "feature_detection.h"
 #include <vikit/math_utils.h>
 #include <vikit/homography.h>
 

@@ -21,9 +21,9 @@
 #include <boost/thread.hpp>
 #include <boost/function.hpp>
 #include <vikit/performance_monitor.h>
-#include <svo/global.h>
-#include <svo/feature_detection.h>
-#include <svo/matcher.h>
+#include "global.h"
+#include "feature_detection.h"
+#include "matcher.h"
 
 namespace svo {
 

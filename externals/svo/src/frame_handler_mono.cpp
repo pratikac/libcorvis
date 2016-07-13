@@ -14,18 +14,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <svo/config.h>
-#include <svo/frame_handler_mono.h>
-#include <svo/map.h>
-#include <svo/frame.h>
-#include <svo/feature.h>
-#include <svo/point.h>
-#include <svo/pose_optimizer.h>
-#include <svo/sparse_img_align.h>
+#include "config.h"
+#include "frame_handler_mono.h"
+#include "map.h"
+#include "frame.h"
+#include "feature.h"
+#include "point.h"
+#include "pose_optimizer.h"
+#include "sparse_img_align.h"
 #include <vikit/performance_monitor.h>
-#include <svo/depth_filter.h>
+#include "depth_filter.h"
 #ifdef USE_BUNDLE_ADJUSTMENT
-#include <svo/bundle_adjustment.h>
+#include "bundle_adjustment.h"
 #endif
 
 namespace svo {

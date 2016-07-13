@@ -7,6 +7,9 @@ target_link_libraries(svo
     ${OpenCV_LIBS}
     ${Boost_LIBRARIES}
     fast
-    vikit)
+    vikit
+    sophus)
 
+pods_install_headers(${h_files}
+    DESTINATION svo)
 pods_install_libraries(svo)

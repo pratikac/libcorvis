@@ -19,12 +19,12 @@
 #include <Eigen/StdVector>
 #include <boost/bind.hpp>
 #include <fstream>
-#include <svo/frame_handler_base.h>
-#include <svo/config.h>
-#include <svo/feature.h>
-#include <svo/matcher.h>
-#include <svo/map.h>
-#include <svo/point.h>
+#include "frame_handler_base.h"
+#include "config.h"
+#include "feature.h"
+#include "matcher.h"
+#include "map.h"
+#include "point.h"
 
 namespace svo
 {

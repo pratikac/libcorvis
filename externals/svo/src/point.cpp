@@ -16,9 +16,9 @@
 
 #include <stdexcept>
 #include <vikit/math_utils.h>
-#include <svo/point.h>
-#include <svo/frame.h>
-#include <svo/feature.h>
+#include "point.h"
+#include "frame.h"
+#include "feature.h"
  
 namespace svo {
 

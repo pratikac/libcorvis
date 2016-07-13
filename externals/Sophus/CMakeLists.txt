@@ -1,8 +1,8 @@
 file(GLOB hpp_files *.hpp)
 file(GLOB cpp_files *.cpp)
 
-pods_install_headers(${h_files}
-    DESTINATION Sophus)
+pods_install_headers(${hpp_files}
+    DESTINATION sophus)
 
 add_executable(test_so2 test_so2.cpp)
 add_executable(test_se2 test_se2.cpp)

@@ -6,7 +6,7 @@ add_library(fast
 
 add_executable(test_fast test.cpp)
 target_link_libraries(test_fast
-    fast ${OpenCV_LIBS})
+    fast)
 
 pods_install_executables(test_fast)
 pods_install_headers(${h_files}

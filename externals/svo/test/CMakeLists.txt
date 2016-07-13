@@ -1,6 +1,6 @@
-add_executable(test_feature_align
-    test_feature_align.cpp)
-target_link_libraries(test_feature_align
+add_executable(test_feature_alignment
+    test_feature_alignment.cpp)
+target_link_libraries(test_feature_alignment
     svo)
 
 add_executable(test_pipeline
@@ -33,7 +33,8 @@ add_executable(test_pose_optimizer
 target_link_libraries(test_pose_optimizer
     svo)
 
-pods_install_executables(test_feature_align
+pods_install_executables(
+    test_feature_alignment
     test_pipeline
     test_matcher
     test_feature_detection

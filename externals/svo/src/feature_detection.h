@@ -17,8 +17,8 @@
 #ifndef SVO_FEATURE_DETECTION_H_
 #define SVO_FEATURE_DETECTION_H_
 
-#include <svo/global.h>
-#include <svo/frame.h>
+#include "global.h"
+#include "frame.h"
 
 namespace svo {
 

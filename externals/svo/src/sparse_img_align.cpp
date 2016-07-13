@@ -15,11 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <algorithm>
-#include <svo/sparse_img_align.h>
-#include <svo/frame.h>
-#include <svo/feature.h>
-#include <svo/config.h>
-#include <svo/point.h>
+#include "sparse_img_align.h"
+#include "frame.h"
+#include "feature.h"
+#include "config.h"
+#include "point.h"
 #include <vikit/abstract_camera.h>
 #include <vikit/vision.h>
 #include <vikit/math_utils.h>
