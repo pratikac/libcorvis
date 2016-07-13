@@ -1,9 +1,0 @@
-[submodule "externals/Sophus"]
-	path = externals/Sophus
-	url = https://github.com/strasdat/Sophus.git
-[submodule "externals/fast"]
-	path = externals/fast
-	url = https://github.com/uzh-rpg/fast.git
-[submodule "externals/rpg_svo"]
-	path = externals/rpg_svo
-	url = https://github.com/uzh-rpg/rpg_svo
