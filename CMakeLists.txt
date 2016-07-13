@@ -55,7 +55,5 @@ link_directories(
   ${Boost_LIBRARIES}
 )
 
-
-add_subdirectory(externals/fast)
-add_subdirectory(externals/Sophus)
 add_subdirectory(src)
+add_subdirectory(externals)
