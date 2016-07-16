@@ -80,10 +80,7 @@
 # File: lcmtypes.cmake
 # Distributed with nucore v1.0
 
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(LCM lcm)
-
-if (LCM_FOUND)
+if(LCM_FOUND)
     #find lcm-gen (it may be in the install path)
     find_program(LCM_GEN_EXECUTABLE NAMES lcm-gen
         HINTS ${EXECUTABLE_OUTPUT_PATH} ${EXECUTABLE_INSTALL_PATH})
@@ -381,9 +378,6 @@ function(lcmtypes_install_types)
 endfunction()
 
 macro(lcmtypes_build)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(LCM REQUIRED lcm)
-    
     #find lcm-gen (it may be in the install path)
     find_program(LCM_GEN_EXECUTABLE lcm-gen ${EXECUTABLE_OUTPUT_PATH} ${EXECUTABLE_INSTALL_PATH})
     if (NOT LCM_GEN_EXECUTABLE)
@@ -396,7 +390,7 @@ macro(lcmtypes_build)
 
     lcmtypes_build_java()
     lcmtypes_build_python()
-    #lcmtypes_build_lua()
+    lcmtypes_build_lua()
     #lcmtypes_build_csharp()
 
     lcmtypes_install_types()

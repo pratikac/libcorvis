@@ -1,4 +1,4 @@
-set(BOT_VIS_PACKAGES glib-2.0 gtk+-2.0 gdk-pixbuf-2.0 libpng gl glu)
+set(BOT_VIS_PACKAGES glib-2.0 gthread-2.0 gtk+-2.0 gdk-pixbuf-2.0 libpng gl glu)
 
 add_executable(corvis-viewer viewer.cpp)
 pods_use_pkg_config_packages(corvis-viewer ${BOT_VIS_PACKAGES})
