@@ -42,10 +42,17 @@ find_package(OpenCV REQUIRED)
 find_package(Eigen REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread system)
 
+set(BOT_LCM_INCLUDE_DIRS "/home/pratik/code/nutonomy/nuCore/build/lcm/include;/home/pratik/code/nutonomy/nuCore/build/libot/include")
+
 include_directories(
     ${Eigen_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
+    ${BOT_LCM_INCLUDE_DIRS}
+)
+
+link_directories(
+    /home/pratik/code/nutonomy/nuCore/build/lcm/lib/;/home/pratik/code/nutonomy/nuCore/build/libot/lib
 )
 
 link_libraries(
