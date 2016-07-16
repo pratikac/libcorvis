@@ -11,6 +11,7 @@ endif()
 message(STATUS CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX})
 
 # set up Java, use a target of 1.6
+find_package(PkgConfig REQUIRED)
 find_package(Java REQUIRED)
 include(UseJava)
 set(CMAKE_JAVA_COMPILE_FLAGS ${CMAKE_JAVA_COMPILE_FLAGS} -source 6 -target 6)
@@ -26,6 +27,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 include(cmake/pods.cmake)
 
 # build lcm types
+set(LCM_ROOT "$ENV{NUCORE}/build/lcm")
+set(LIBBOT_ROOT "$ENV{NUCORE}/build/libbot")
+include(cmake/FindBotLcm.cmake)
+
 include(cmake/lcmtypes.cmake)
 if(LCM_FOUND)
     lcmtypes_build()
@@ -42,22 +47,18 @@ find_package(OpenCV REQUIRED)
 find_package(Eigen REQUIRED)
 find_package(Boost REQUIRED COMPONENTS thread system)
 
-set(BOT_LCM_INCLUDE_DIRS "/home/pratik/code/nutonomy/nuCore/build/lcm/include;/home/pratik/code/nutonomy/nuCore/build/libot/include")
-
 include_directories(
     ${Eigen_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
-    ${BOT_LCM_INCLUDE_DIRS}
-)
-
-link_directories(
-    /home/pratik/code/nutonomy/nuCore/build/lcm/lib/;/home/pratik/code/nutonomy/nuCore/build/libot/lib
+    ${BOTLCM_INCLUDE_DIRS}
 )
 
 link_libraries(
     ${OpenCV_LIBS}
     ${Boost_LIBRARIES}
+    ${LCM_LIBRARIES}
+    ${LIBBOT_LIBRARIES}
 )
 
 add_subdirectory(src)
