@@ -34,7 +34,7 @@ using namespace Eigen;
  *
  * Template Parameters:
  * D  : dimension of the residual
- * T  : type of the model, e.g. SE2, SE3
+ * T  : type of the model, e.g. SE2, SE3d
  */
 
 template <int D, typename T>

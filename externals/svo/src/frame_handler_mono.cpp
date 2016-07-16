@@ -78,7 +78,7 @@ void FrameHandlerMono::addImage(const cv::Mat& img, const double timestamp)
   else if(stage_ == STAGE_FIRST_FRAME)
     res = processFirstFrame();
   else if(stage_ == STAGE_RELOCALIZING)
-    res = relocalizeFrame(SE3(Matrix3d::Identity(), Vector3d::Zero()),
+    res = relocalizeFrame(SE3d(Matrix3d::Identity(), Vector3d::Zero()),
                           map_.getClosestKeyframe(last_frame_));
 
   // set last frame
