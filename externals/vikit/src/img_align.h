@@ -90,7 +90,7 @@ public:
                            int test_id = 0);
 
   void
-  runOptimization(SE3& model, int levelBegin = -1, int levelEnd = -1);
+  runOptimization(SE3d& model, int levelBegin = -1, int levelEnd = -1);
 
 };
 
