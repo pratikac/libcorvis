@@ -79,13 +79,13 @@ double sampsonusError(
     const Matrix3d& m3Essential,
     const Vector2d& v2);
 
-inline Matrix3d sqew(const Vector3d& v)
+inline Matrix3d skew(const Vector3d& v)
 {
-  Matrix3d v_sqew;
-  v_sqew << 0, -v[2], v[1],
+  Matrix3d v_skew;
+  v_skew << 0, -v[2], v[1],
             v[2], 0, -v[0],
             -v[1], v[0], 0;
-  return v_sqew;
+  return v_skew;
 }
 
 inline double norm_max(const Eigen::VectorXd & v)

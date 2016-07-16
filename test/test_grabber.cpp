@@ -10,6 +10,9 @@ using namespace std;
 int main(int argc, char* argv[])
 {
     int cam_idx = 0;
+    if(argc > 1)
+        cam_idx = atoi(argv[1]);
+
     int32_t width = 1366, height = 768;
 
     bool show_video = true;

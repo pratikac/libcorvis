@@ -178,8 +178,8 @@ Matrix3d
 angax2dcm(const Vector3d& n, const double& angle)
 {
   // n must be normalized
-  Matrix3d sqewn(sqew(n));
-  return Matrix3d(Matrix3d::Identity() + sqewn*sin(angle) + sqewn*sqewn*(1-cos(angle)));
+  Matrix3d skewn(skew(n));
+  return Matrix3d(Matrix3d::Identity() + skewn*sin(angle) + skewn*skewn*(1-cos(angle)));
 }
 
 double
