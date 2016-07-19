@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     }
 
     vector<unsigned char> buf;
-    cvmat_to_jpeg(m, buf);
+    cvmat_to_jpeg(m, buf, 50);
 
     cv::Mat m2;
     jpeg_to_cvmat(buf, m2);
