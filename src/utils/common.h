@@ -9,7 +9,7 @@
 #include <chrono>
 #include <ctime>
 #include <unistd.h>
-
+#include <cstdlib>
 #include <cstdio>
 
 #ifndef ERR
