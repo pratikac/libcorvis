@@ -8,6 +8,10 @@ target_link_libraries(test_tracker
     svo
     vikit)
 
+add_executable(test_decode
+    test_decode.cpp)
+
 pods_install_executables(
     test_grabber
-    test_tracker)
+    test_tracker
+    test_decode)
