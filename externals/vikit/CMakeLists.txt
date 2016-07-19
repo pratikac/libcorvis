@@ -1,2 +1,5 @@
 add_subdirectory(src)
-add_subdirectory(test)
+
+if(MAKE_TEST)
+    add_subdirectory(test)
+endif()

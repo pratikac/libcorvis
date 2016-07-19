@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(POD_NAME libcorvis)
+set(POD_NAME corvis)
 
 if(CMAKE_INSTALL_PREFIX STREQUAL "/usr/local")
     find_file(_build_dir build PATHS ${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/.. ${PROJECT_SOURCE_DIR}/../../)
@@ -52,14 +52,15 @@ include_directories(
     ${OpenCV_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${BOTLCM_INCLUDE_DIRS}
+    ${GTK2_INCLUDE_DIRS}
 )
 
 link_libraries(
     ${OpenCV_LIBS}
     ${Boost_LIBRARIES}
     ${LCM_LIBRARIES}
-    ${LIBBOT_CORE_LIBRARY}
-    #${LIBBOT_LIBRARIES}
+    ${GTK2_LIBRARIES}
+    ${LIBBOT_LIBRARIES}
 )
 
 add_subdirectory(src)

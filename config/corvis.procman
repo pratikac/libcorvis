@@ -1,0 +1,25 @@
+group "00 startup" {
+    cmd "param server" {
+        exec = "bot-param-server ${CORVIS}/config/corvis.cfg";
+        host = "localhost";
+    }
+    cmd "spy" {
+        exec = "${CORVIS}/build/bin/corvis-spy.sh";
+        host = "localhost";
+    }
+    cmd "viewer" {
+        exec = "${CORVIS}/build/bin/corvis-viewer";
+        host = "localhost";
+    }
+}
+
+group "01 sensors" {
+    cmd "camera" {
+        exec = "${CORVIS}/build/bin/usb_camera_driver -c CAMERA -w 640 -h 480 -f 30 -g 1";
+        host = "localhost";
+    }
+    cmd "imu" {
+        exec = "${CORVIS}/build/bin/imu_driver -c IMU -f 100";
+        host = "localhost";
+    }
+}
