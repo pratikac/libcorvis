@@ -1,5 +1,3 @@
-add_definitions(-g)
-
 add_executable(test_grabber
     test_grabber.cpp)
 
@@ -13,15 +11,15 @@ target_link_libraries(test_tracker
 add_executable(test_decode
     test_decode.cpp)
 
-add_executable(test_lcm_camera_decode
-    test_lcm_camera_decode.cpp)
+add_executable(test_image_receive
+    test_image_receive.cpp)
 
-add_executable(test_renderer_camera
-    test_renderer_camera.cpp)
+add_executable(test_image_publish
+    test_image_publish.cpp)
 
 pods_install_executables(
     test_grabber
     test_tracker
     test_decode
-    test_lcm_camera_decode
-    test_renderer_camera)
+    test_image_publish
+    test_image_receive)
