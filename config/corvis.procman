@@ -15,7 +15,7 @@ group "00 startup" {
 
 group "01 sensors" {
     cmd "camera" {
-        exec = "${CORVIS}/build/bin/usb_camera_driver -c CAMERA -w 640 -h 480 -f 30 -g 1";
+        exec = "${CORVIS}/build/bin/usb_camera_driver -c CAMERA -w 640 -h 480 -f 30 -g 1 -q 95";
         host = "localhost";
     }
     cmd "imu" {

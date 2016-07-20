@@ -8,11 +8,8 @@ add_executable(corvis-viewer
 
 pods_use_pkg_config_packages(corvis-viewer ${BOT_VIS_PACKAGES})
 target_link_libraries(corvis-viewer
-    ${LIBBOT_VIS_LIBRARY}
-    ${LIBBOT_LCMGL_RENDERER_LIBRARY}
     glut
     z
-    jpeg
-    lcmtypes_corvis)
+    jpeg)
 
 pods_install_executables(corvis-viewer)

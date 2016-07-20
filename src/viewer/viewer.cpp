@@ -7,6 +7,8 @@
 #include <bot_core/bot_core.h>
 #include <bot_vis/bot_vis.h>
 #include <bot_lcmgl_render/lcmgl_bot_renderer.h>
+#include <bot_frames/bot_frames_renderers.h>
+
 #include "udp_util.h"
 #include "view_menu.h"
 
@@ -56,16 +58,17 @@ int main(int argc, char *argv[])
     setlinebuf(stdout);
 
     lcm_t* lcm = bot_lcm_get_global(NULL);
+    BotParam* param = bot_param_new_from_server(lcm, 1);
+    BotFrames* frames = bot_frames_get_global(lcm, param);
 
     BotViewer* viewer = bot_viewer_new("corvis-viewer");
     bot_glib_mainloop_attach_lcm(lcm);
     setup_view_menu(viewer);
 
-    char *fname = g_build_filename(g_get_user_config_dir(), ".corvis-viewerrc", NULL);
-
     // setup renderers
     bot_viewer_add_stock_renderer(viewer, BOT_VIEWER_STOCK_RENDERER_GRID, 1);
     bot_lcmgl_add_renderer_to_viewer(viewer, lcm, 0);
+    bot_frames_add_renderer_to_viewer(viewer, 1, frames);
 
     setup_renderer_camera(viewer, 1);
 
@@ -80,6 +83,7 @@ int main(int argc, char *argv[])
     glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
     glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 
+    char *fname = g_build_filename(g_get_user_config_dir(), ".corvis-viewerrc", NULL);
     bot_viewer_load_preferences(viewer, fname);
     gtk_main();
 
