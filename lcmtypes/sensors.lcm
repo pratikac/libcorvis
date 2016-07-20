@@ -14,35 +14,16 @@ struct ins_t
     double rel_alt;
 }
 
-struct image_type_t
-{
-    const int8_t RGB8 = 1;
-    const int8_t RGB16 = 2;
-    const int8_t BGR8 = 3;
-    const int8_t BGR16 = 4;
-    const int8_t YUV411 = 5;
-    const int8_t YUV422 = 6;
-    const int8_t YUV444 = 7;
-    const int8_t JPEG = 8;
-    const int8_t MONO8 = 9;
-    const int8_t MONO16 = 10;
-    const int8_t PNG = 11;
-    int8_t enumerate;
-}
-
 struct image_t
 {
     int64_t utime;
     int64_t device_utime;
     string coord_frame;
 
-    int32_t width;
-    int32_t height;
+    int32_t width, height, stride;
 
     int32_t size;
     byte data[size];
-
-    image_type_t type;
 }
 
 struct model_type_t

@@ -45,7 +45,7 @@ typedef struct
     renderer_camera_t* renderer;
     BotGtkParamWidget* pw;
     GtkWidget* expander;
-    
+
     uint8_t* uncompressed_buffer;
     int uncompressed_buffer_size;
     int width, height;
@@ -187,7 +187,7 @@ on_load_preferences (BotViewer *viewer, GKeyFile *keyfile, void *user_data)
     {
         char* key = keys[i];
         thumbnail_t* t = (thumbnail_t*) g_hash_table_lookup(s->cam_handlers, key);
-        if (!t)
+        if(!t)
         {
             t = (thumbnail_t*) calloc (1, sizeof (thumbnail_t));
             t->channel = strdup(key);
@@ -197,7 +197,7 @@ on_load_preferences (BotViewer *viewer, GKeyFile *keyfile, void *user_data)
         char *val = g_key_file_get_string(keyfile, RENDERER_NAME, key, NULL);
         t->render_place = 0;
         t->expanded = 0;
-        if (val)
+        if(val)
             sscanf(val, "%d %d", &t->render_place, &t->expanded);
     }
     g_strfreev (keys);
@@ -209,7 +209,7 @@ on_save_preferences (BotViewer *viewer, GKeyFile *keyfile, void *user_data)
     renderer_camera_t* s = (renderer_camera_t*) user_data;
     GList* keys = g_hash_table_get_keys(s->cam_handlers);
 
-    for (int k = 0; k < g_list_length(keys); k++)
+    for(int k = 0; k < g_list_length(keys); k++)
     {
         char* key = (char*) g_list_nth_data(keys, k);
         thumbnail_t* t = (thumbnail_t*) g_hash_table_lookup(s->cam_handlers, key);
@@ -238,10 +238,10 @@ void on_renderer_param_widget_changed(BotGtkParamWidget* pw, const char* name,
 BotRenderer* renderer_camera_new(BotViewer* _v)
 {
     renderer_camera_t* s = new renderer_camera_t();
-    
+
     s->viewer = _v;
     s->lcm = bot_lcm_get_global(NULL);
-    
+
     s->renderer.draw = renderer_camera_draw;
     s->renderer.destroy = renderer_camera_free;
     s->renderer.name = (char*)RENDERER_NAME;
@@ -274,6 +274,8 @@ void setup_renderer_camera(BotViewer* viewer, int render_priority)
 static void
 thumbnail_draw(thumbnail_t* t)
 {
+    return;
+
     if(!t->renderer->renderer.enabled || !t->last_image)
         return;
 
@@ -288,43 +290,25 @@ thumbnail_draw(thumbnail_t* t)
     // upload the texture to the graphics card if necessary
     if(!t->is_uploaded)
     {
-        int stride = 0;
         GLenum gl_format;
         uint8_t *tex_src = NULL;
 
-        if(t->last_image->pixelformat == 0 ||
-                t->last_image->pixelformat == PIXEL_FORMAT_GRAY ||
-                t->last_image->pixelformat == PIXEL_FORMAT_BAYER_BGGR ||
-                t->last_image->pixelformat == PIXEL_FORMAT_BAYER_RGGB ||
-                t->last_image->pixelformat == PIXEL_FORMAT_BAYER_GRBG ||
-                t->last_image->pixelformat == PIXEL_FORMAT_BAYER_GBRG)
+        corvis_image_t* msg = t->last_image;
+
+        // decompress to 8U RGB from JPEG
+        int stride = t->last_image->width * 3;
+        int buf_size = msg->height * stride;
+        if (t->uncompressed_buffer_size < buf_size)
         {
-
-            stride = t->last_image->width;
-            gl_format = GL_LUMINANCE;
-            tex_src = t->last_image->image;
+            t->uncompressed_buffer =
+                (uint8_t*)realloc(t->uncompressed_buffer, buf_size);
+            t->uncompressed_buffer_size = buf_size;
         }
-        else if(t->last_image->pixelformat == PIXEL_FORMAT_MJPEG)
-        {
-            corvis_image_t* msg = t->last_image;
+        jpeg_decompress_8u_rgb(msg->data, msg->size,
+                t->uncompressed_buffer, msg->width, msg->height, stride);
 
-            // might need to JPEG decompress...
-            stride = t->last_image->width * 3;
-            int buf_size = msg->height * stride;
-            if (t->uncompressed_buffer_size < buf_size)
-            {
-                t->uncompressed_buffer =
-                    (uint8_t*)realloc(t->uncompressed_buffer, buf_size);
-                t->uncompressed_buffer_size = buf_size;
-            }
-            jpeg_decompress_to_8u_rgb(msg->image, msg->size,
-                    t->uncompressed_buffer, msg->width, msg->height, stride);
-
-            gl_format = GL_RGB;
-            tex_src = t->uncompressed_buffer;
-        }
-        else
-            return;
+        gl_format = GL_RGB;
+        tex_src = t->uncompressed_buffer;
 
         bot_gl_texture_upload(t->texture, gl_format, GL_UNSIGNED_BYTE,
                 stride, tex_src);
@@ -407,20 +391,20 @@ on_image(const lcm_recv_buf_t *rbuf, const char *channel,
 {
     renderer_camera_t* s = (renderer_camera_t*) user_data;
 
-    if (!s->renderer.enabled)
+    if(!s->renderer.enabled)
         return;
 
     thumbnail_t *t = (thumbnail_t*)g_hash_table_lookup(s->cam_handlers, channel);
-    if (!t)
+    if(!t)
     {
-        t = (thumbnail_t*) calloc(1, sizeof (thumbnail_t));
+        t = (thumbnail_t*)calloc(1, sizeof (thumbnail_t));
         t->renderer = s;
         t->render_place = 0;
         t->channel = strdup(channel);
         g_hash_table_replace(s->cam_handlers, t->channel, t);
     }
 
-    if (!t->msg_received)
+    if(!t->msg_received)
     {
         t->gl_area = BOT_GTK_GL_DRAWING_AREA(bot_gtk_gl_drawing_area_new(FALSE));
 
@@ -444,9 +428,9 @@ on_image(const lcm_recv_buf_t *rbuf, const char *channel,
         gtk_container_add(GTK_CONTAINER (t->expander), vbox);
 
         gtk_box_pack_start(GTK_BOX (vbox),
-               GTK_WIDGET(t->pw), TRUE, TRUE, 0);
+                GTK_WIDGET(t->pw), TRUE, TRUE, 0);
         gtk_box_pack_start(GTK_BOX (vbox),
-               GTK_WIDGET(t->gl_area), TRUE, TRUE, 0);
+                GTK_WIDGET(t->gl_area), TRUE, TRUE, 0);
 
         g_signal_connect(G_OBJECT (t->gl_area), "size-allocate",
                 G_CALLBACK(on_gl_area_size), t);
@@ -480,7 +464,7 @@ on_image(const lcm_recv_buf_t *rbuf, const char *channel,
     }
 
     if (t->last_image)
-        corvis_image_t_destroy (t->last_image);
+        corvis_image_t_destroy(t->last_image);
 
     t->last_image = corvis_image_t_copy(msg);
     t->is_uploaded = 0;

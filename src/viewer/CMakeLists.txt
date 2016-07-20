@@ -12,6 +12,7 @@ target_link_libraries(corvis-viewer
     ${LIBBOT_LCMGL_RENDERER_LIBRARY}
     glut
     z
-    jpeg)
+    jpeg
+    lcmtypes_corvis)
 
 pods_install_executables(corvis-viewer)

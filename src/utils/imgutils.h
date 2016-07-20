@@ -18,4 +18,15 @@ void cvmat_to_jpeg(Mat& m, vector<unsigned char>& buf, int quality = 95)
     imencode(".jpg", m, buf, params);
 }
 
+void jpeg_decompress_8u_rgb(const uint8_t* src, int sz,
+        uint8_t* dest, int width, int height, int stride)
+{
+    vector<uint8_t> tmp;
+    tmp.assign(src, src + sz);
+
+    Mat m;
+    jpeg_to_cvmat(tmp, m);
+    memcpy(dest, m.data, width*height*sizeof(uint8_t));
+}
+
 #endif
