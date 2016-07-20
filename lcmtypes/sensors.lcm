@@ -20,7 +20,7 @@ struct image_t
     int64_t device_utime;
     string coord_frame;
 
-    int32_t width, height, stride;
+    int32_t width, height;
 
     int32_t size;
     byte data[size];

@@ -58,9 +58,10 @@ include_directories(
 link_libraries(
     ${OpenCV_LIBS}
     ${Boost_LIBRARIES}
-    ${LCM_LIBRARIES}
     ${GTK2_LIBRARIES}
     ${LIBBOT_LIBRARIES}
+    lcmtypes_corvis
+    ${LCM_LIBRARIES}
 )
 
 add_subdirectory(src)

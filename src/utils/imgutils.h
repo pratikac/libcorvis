@@ -26,7 +26,7 @@ void jpeg_decompress_8u_rgb(const uint8_t* src, int sz,
 
     Mat m;
     jpeg_to_cvmat(tmp, m);
-    memcpy(dest, m.data, width*height*sizeof(uint8_t));
+    memcpy(dest, m.data, width*stride*sizeof(uint8_t));
 }
 
 #endif
