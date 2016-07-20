@@ -7,6 +7,7 @@
 #include <lcm/lcm.h>
 #include <bot_core/bot_core.h>
 #include <lcmtypes/corvis_image_t.h>
+#include <vikit/timer.h>
 
 using namespace cv;
 using namespace std;
@@ -22,7 +23,15 @@ handle(const lcm_recv_buf_t* rbuf, const char* channel,
     buf.assign(msg->data, msg->data + msg->size);
 
     Mat m;
+   
+    /*
+    vk::Timer t;
+    t.start();
     jpeg_to_cvmat(buf, m);
+    t.stop();
+    printf("[decode]: %.3f [ms]\n", t.getTime());
+    */
+
     imshow("recv-img", m);
     waitKey(10);
 }

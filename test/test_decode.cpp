@@ -2,6 +2,7 @@
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include <vikit/timer.h>
 
 using namespace cv;
 using namespace std;
@@ -29,6 +30,21 @@ int main(int argc, char* argv[])
 
     cv::Mat m2;
     jpeg_to_cvmat(buf, m2);
+
+#if 1
+    vk::Timer t;
+    t.start();
+    for(int i=0; i<100; i++)
+        cvmat_to_jpeg(m, buf, 50);
+    t.stop();
+    printf("[encode]: %.3f [ms]\n", t.getTime()*10);
+    
+    t.start();
+    for(int i=0; i<100; i++)
+        jpeg_to_cvmat(buf, m2);
+    t.stop();
+    printf("[decode]: %.3f [ms]\n", t.getTime()*10);
+#endif
 
     namedWindow("org-img", WINDOW_AUTOSIZE);
     namedWindow("decoded-img", WINDOW_AUTOSIZE);
