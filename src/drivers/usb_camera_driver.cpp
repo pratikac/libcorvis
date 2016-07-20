@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
     cap.set(CV_CAP_PROP_FRAME_WIDTH, options.width);
     cap.set(CV_CAP_PROP_FRAME_HEIGHT, options.height);
 
-    int wait_time_ms = 10;
+    int wait_time_ms = 1000/(float)options.freq;
 
     cv::Mat m;
     vector<uint8_t> buf;
@@ -113,7 +113,7 @@ int main(int argc, char* argv[])
 
         corvis_image_t_publish(lcm, options.channel, &msg);
 
-        usleep(wait_time_ms*100);
+        usleep(wait_time_ms*1000);
     }
     
     return 0;

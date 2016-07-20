@@ -13,9 +13,9 @@ int main(int argc, char* argv[])
     if(argc > 1)
         cam_idx = atoi(argv[1]);
 
-    int32_t width = 1366, height = 768;
+    int32_t width = 640, height = 480;
 
-    bool show_video = true;
+    bool show_video = false;
 
     cv::VideoCapture cap(cam_idx);
     if(!cap.isOpened())
