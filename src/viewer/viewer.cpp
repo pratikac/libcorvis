@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
     glutInit(&argc, argv);
     setlinebuf(stdout);
 
-    lcm_t* lcm = lcm_create(NULL);
+    lcm_t* lcm = bot_lcm_get_global(NULL);
 
     BotViewer* viewer = bot_viewer_new("corvis-viewer");
     bot_glib_mainloop_attach_lcm(lcm);
@@ -88,7 +88,6 @@ int main(int argc, char *argv[])
 
     bot_viewer_unref(viewer);
     bot_glib_mainloop_detach_lcm(lcm);
-    lcm_destroy(lcm);
 
     return 0;
 }

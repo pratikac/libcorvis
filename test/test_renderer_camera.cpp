@@ -13,9 +13,9 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    if(argc < 2)
+    if(argc < 3)
     {
-        printf("Usage: test_decoder [img_name]\n");
+        printf("Usage: test_decoder [img_name] [channel_name]\n");
         return 0;
     }
     
@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
     }
 
     vector<uint8_t> buf;
-    cvmat_to_jpeg(m, buf, 95);
+    cvmat_to_jpeg(m, buf, 25);
         
     corvis_image_t msg;
     msg.utime = bot_timestamp_now();
@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
         usleep(1000*100);
 
         msg.utime = bot_timestamp_now();
-        corvis_image_t_publish(lcm, "TEST_CAMERA", &msg);
+        corvis_image_t_publish(lcm, argv[2], &msg);
     }
     return 0;
 }

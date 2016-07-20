@@ -1,4 +1,5 @@
 #include <corvis/common.h>
+#include <corvis/config.h>
 #include <corvis/imgutils.h>
 
 #include <gtk/gtk.h>
@@ -27,6 +28,8 @@ enum
 typedef struct
 {
     lcm_t* lcm;
+    corvis_config_t* config;
+
     BotRenderer renderer;
     BotViewer* viewer;
     BotGtkParamWidget* pw;
@@ -71,8 +74,9 @@ thumbnail_destroy(thumbnail_t* t)
     free(t);
 }
 
-static int
-on_image(const char* channel, const corvis_image_t* msg, void* user_data);
+static void
+on_image(const lcm_recv_buf_t *rbuf, const char *channel,
+        const corvis_image_t *msg, void *user_data);
 
 static void
 thumbnail_draw(thumbnail_t* t);
@@ -225,14 +229,11 @@ renderer_camera_free(BotRenderer* renderer)
 {
     renderer_camera_t* s = (renderer_camera_t*) renderer;
 
+    if(s->config)
+        free(s->config);
+
     g_hash_table_destroy(s->cam_handlers);
     free(s);
-}
-
-void on_renderer_param_widget_changed(BotGtkParamWidget* pw, const char* name,
-        renderer_camera_t* s)
-{
-
 }
 
 BotRenderer* renderer_camera_new(BotViewer* _v)
@@ -241,6 +242,9 @@ BotRenderer* renderer_camera_new(BotViewer* _v)
 
     s->viewer = _v;
     s->lcm = bot_lcm_get_global(NULL);
+
+    s->config = NULL;
+    //s->config = new corvis_config_t();
 
     s->renderer.draw = renderer_camera_draw;
     s->renderer.destroy = renderer_camera_free;
@@ -251,19 +255,18 @@ BotRenderer* renderer_camera_new(BotViewer* _v)
     s->cam_handlers = g_hash_table_new_full(g_str_hash, g_str_equal,
             NULL, (GDestroyNotify) thumbnail_destroy);
 
-    s->pw = BOT_GTK_PARAM_WIDGET(bot_gtk_param_widget_new());
-    gtk_container_add(GTK_CONTAINER(s->renderer.widget), GTK_WIDGET(s->pw));
-    gtk_widget_show(GTK_WIDGET(s->pw));
+    s->renderer.widget = gtk_vbox_new(FALSE, 0);
+    gtk_widget_show(s->renderer.widget);
 
-    g_signal_connect(G_OBJECT(s->pw), "changed",
-            G_CALLBACK(on_renderer_param_widget_changed), s);
+    // subscribe to all thumb images
+    corvis_image_t_subscribe(s->lcm, "CAM_.*_THUMB", on_image, s);
+
+    g_signal_connect(G_OBJECT(_v), "load-preferences",
+            G_CALLBACK(on_load_preferences), s);
+    g_signal_connect(G_OBJECT(_v), "save-preferences",
+            G_CALLBACK(on_save_preferences), s);
 
     return &s->renderer;
-}
-
-static void
-renderer_camera_draw(renderer_camera_t* s)
-{
 }
 
 void setup_renderer_camera(BotViewer* viewer, int render_priority)
@@ -274,8 +277,6 @@ void setup_renderer_camera(BotViewer* viewer, int render_priority)
 static void
 thumbnail_draw(thumbnail_t* t)
 {
-    return;
-
     if(!t->renderer->renderer.enabled || !t->last_image)
         return;
 
@@ -295,17 +296,30 @@ thumbnail_draw(thumbnail_t* t)
 
         corvis_image_t* msg = t->last_image;
 
-        // decompress to 8U RGB from JPEG
-        int stride = t->last_image->width * 3;
-        int buf_size = msg->height * stride;
+        // decompress to RGB always from JPEG
+        vector<uint8_t> tmp;
+        tmp.assign(msg->data, msg->data + msg->size);
+
+        cv::Mat m;
+        jpeg_to_cvmat(tmp, m, CV_LOAD_IMAGE_COLOR);
+
+        int stride = msg->width*3;
+        int buf_size = msg->width*msg->height*3;
         if (t->uncompressed_buffer_size < buf_size)
         {
             t->uncompressed_buffer =
                 (uint8_t*)realloc(t->uncompressed_buffer, buf_size);
             t->uncompressed_buffer_size = buf_size;
         }
-        jpeg_decompress_8u_rgb(msg->data, msg->size,
-                t->uncompressed_buffer, msg->width, msg->height, stride);
+        for(int i=0; i<msg->height; i++)
+        {
+            for(int j=0; j<msg->width; j++)
+            {
+                t->uncompressed_buffer[i*msg->width*3 + j*3 + 0] = m.at<cv::Vec3b>(i,j)[0];
+                t->uncompressed_buffer[i*msg->width*3 + j*3 + 1] = m.at<cv::Vec3b>(i,j)[1];
+                t->uncompressed_buffer[i*msg->width*3 + j*3 + 2] = m.at<cv::Vec3b>(i,j)[2];
+            }
+        }
 
         gl_format = GL_RGB;
         tex_src = t->uncompressed_buffer;
@@ -397,7 +411,7 @@ on_image(const lcm_recv_buf_t *rbuf, const char *channel,
     thumbnail_t *t = (thumbnail_t*)g_hash_table_lookup(s->cam_handlers, channel);
     if(!t)
     {
-        t = (thumbnail_t*)calloc(1, sizeof (thumbnail_t));
+        t = (thumbnail_t*)calloc(1, sizeof(thumbnail_t));
         t->renderer = s;
         t->render_place = 0;
         t->channel = strdup(channel);
@@ -414,11 +428,11 @@ on_image(const lcm_recv_buf_t *rbuf, const char *channel,
                 t->render_place,
                 "Here", RENDER_IN_WIDGET,
                 "Top Left", RENDER_IN_TOP_LEFT,
-                "Top Cent.", RENDER_IN_TOP_CENTER,
+                "Top Center", RENDER_IN_TOP_CENTER,
                 "Top Right", RENDER_IN_TOP_RIGHT,
-                "Bot. Left", RENDER_IN_BOTTOM_LEFT,
-                "Bot. Cent.", RENDER_IN_BOTTOM_CENTER,
-                "Bot. Right", RENDER_IN_BOTTOM_RIGHT,
+                "Bottom Left", RENDER_IN_BOTTOM_LEFT,
+                "Bottom Center", RENDER_IN_BOTTOM_CENTER,
+                "Bottom Right", RENDER_IN_BOTTOM_RIGHT,
                 NULL);
 
         t->expander = gtk_expander_new(channel);
@@ -472,10 +486,10 @@ on_image(const lcm_recv_buf_t *rbuf, const char *channel,
     switch(bot_gtk_param_widget_get_enum(t->pw, PARAM_RENDER_IN))
     {
         case RENDER_IN_WIDGET:
-            if (gtk_expander_get_expanded (GTK_EXPANDER (t->expander)))
+            if(gtk_expander_get_expanded(GTK_EXPANDER (t->expander)))
                 bot_gtk_gl_drawing_area_invalidate(t->gl_area);
         default:
-            bot_viewer_request_redraw (s->viewer);
+            bot_viewer_request_redraw(s->viewer);
             break;
     }
 }
