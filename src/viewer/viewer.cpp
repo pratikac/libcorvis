@@ -10,6 +10,8 @@
 #include "udp_util.h"
 #include "view_menu.h"
 
+void setup_renderer_camera(BotViewer*, int);
+
 static int
 logplayer_remote_on_key_press(BotViewer *viewer, BotEventHandler *ehandler,
         const GdkEventKey *event)
@@ -46,6 +48,7 @@ logplayer_remote_on_key_press(BotViewer *viewer, BotEventHandler *ehandler,
 
     return 1;
 }
+
 int main(int argc, char *argv[])
 {
     gtk_init(&argc, &argv);
@@ -63,6 +66,8 @@ int main(int argc, char *argv[])
     // setup renderers
     bot_viewer_add_stock_renderer(viewer, BOT_VIEWER_STOCK_RENDERER_GRID, 1);
     bot_lcmgl_add_renderer_to_viewer(viewer, lcm, 0);
+
+    setup_renderer_camera(viewer, 1);
 
     // logplayer controls
     BotEventHandler *ehandler = (BotEventHandler*) calloc(1, sizeof(BotEventHandler));
