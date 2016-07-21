@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 
     int32_t width = 640, height = 480;
 
-    bool show_video = false;
+    bool show_video = true;
 
     cv::VideoCapture cap(cam_idx);
     if(!cap.isOpened())

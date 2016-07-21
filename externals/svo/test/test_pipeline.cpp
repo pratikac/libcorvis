@@ -79,7 +79,8 @@ void BenchmarkNode::runFromFolder()
                 << "#Features: " << vo_->lastNumObservations() << " \t"
                 << "Proc. Time: " << vo_->lastProcessingTime()*1000 << "ms \n";
 
-            // access the pose of the camera via vo_->lastFrame()->T_f_w_.
+            std::cout << vo_->lastFrame()->T_f_w_.rotationMatrix() << std::endl;
+            std::cout << vo_->lastFrame()->T_f_w_.translation() << std::endl;
         }
     }
 }
