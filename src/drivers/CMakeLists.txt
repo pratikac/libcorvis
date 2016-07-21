@@ -1,11 +1,11 @@
-add_executable(usb_camera_driver
-    usb_camera_driver.cpp)
-target_link_libraries(usb_camera_driver
+add_executable(driver_usb_camera
+    driver_usb_camera.cpp)
+target_link_libraries(driver_usb_camera
     lcmtypes_corvis)
 
-add_executable(imu_driver
-    imu_driver.cpp)
-target_link_libraries(imu_driver
+add_executable(driver_imu
+    driver_imu.cpp)
+target_link_libraries(driver_imu
     lcmtypes_corvis)
 
-pods_install_executables(usb_camera_driver imu_driver)
+pods_install_executables(driver_usb_camera driver_imu)
