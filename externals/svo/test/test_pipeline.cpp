@@ -79,8 +79,8 @@ void BenchmarkNode::runFromFolder()
                 << "#Features: " << vo_->lastNumObservations() << " \t"
                 << "Proc. Time: " << vo_->lastProcessingTime()*1000 << "ms \n";
 
-            std::cout << vo_->lastFrame()->T_f_w_.rotationMatrix() << std::endl;
-            std::cout << vo_->lastFrame()->T_f_w_.translation() << std::endl;
+            //std::cout << vo_->lastFrame()->T_f_w_.rotationMatrix() << std::endl;
+            std::cout << vo_->lastFrame()->T_f_w_.inverse().translation() << std::endl;
         }
     }
 }
