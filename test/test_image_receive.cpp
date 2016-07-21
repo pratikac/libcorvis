@@ -22,7 +22,7 @@ handle(const lcm_recv_buf_t* rbuf, const char* channel,
 
     vk::Timer t;
     t.start();
-    Mat m = jpeg_to_cvmat(buf);
+    Mat m = jpeg_to_cvmat(buf, CV_LOAD_IMAGE_COLOR);
     t.stop();
     printf("[%lu]: %.3f [ms]\n", msg->utime, t.getTime()*1000);
 

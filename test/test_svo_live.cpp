@@ -52,7 +52,7 @@ class node_t
             double t = (tmp)/(1e6);
 
             cv::Mat m = jpeg_to_cvmat(msg->data);
-            printf("Recv: [%dx%d]\n", m.cols, m.rows);
+            //printf("Recv: [%dx%d]\n", m.cols, m.rows);
 
             h->addImage(m, t);
 
@@ -64,8 +64,8 @@ class node_t
                         h->lastProcessingTime()*1000);
 
                 //cout << "Pose: " << h.lastFrame()->T_f_w_ << endl;
-                cout << h->lastFrame()->T_f_w_.inverse().rotationMatrix() << endl;
-                cout << h->lastFrame()->T_f_w_.inverse().translation() << endl;
+                //cout << h->lastFrame()->T_f_w_.inverse().rotationMatrix() << endl;
+                cout << h->lastFrame()->T_f_w_.inverse().translation().transpose() << endl;
             }
         }
 };

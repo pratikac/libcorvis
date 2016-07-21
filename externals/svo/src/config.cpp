@@ -67,7 +67,7 @@ Config::Config() :
     klt_min_level(2),
     reproj_thresh(2.0),
     poseoptim_thresh(2.0),
-    poseoptim_num_iter(10),
+    poseoptim_num_iter(25),
     structureoptim_max_pts(20),
     structureoptim_num_iter(5),
     loba_thresh(2.0),
@@ -79,7 +79,7 @@ Config::Config() :
     subpix_n_iter(10),
     max_n_kfs(0),
     img_imu_delay(0.0),
-    max_fts(120),
+    max_fts(200),
     quality_min_fts(50),
     quality_max_drop_fts(40)
 #endif

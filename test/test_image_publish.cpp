@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
     
     char* fname = argv[1];
     auto m = imread(fname, CV_LOAD_IMAGE_COLOR);
-    cv::cvtColor(m, m, CV_BGR2GRAY);
+    //cv::cvtColor(m, m, CV_BGR2GRAY);
     
     if(!m.data)
     {

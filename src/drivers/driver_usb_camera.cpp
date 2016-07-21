@@ -82,10 +82,12 @@ int main(int argc, char* argv[])
 
     int wait_time_ms = 1000/(float)options.freq;
 
+    char channel_thumb[256];
+    sprintf(channel_thumb, "%s_THUMB", options.channel);
+
     while(1)
     {
         cv::Mat m;
-        corvis::image_t msg;
         
         bool res = cap.read(m);
         if(!res)
@@ -94,6 +96,7 @@ int main(int argc, char* argv[])
             return 1;
         }
 
+        corvis::image_t msg;
         msg.device_utime = bot_timestamp_now();
 
         if(options.grayscale)
@@ -104,9 +107,18 @@ int main(int argc, char* argv[])
         msg.height = m.rows;
         msg.size = msg.data.size();
         msg.utime = bot_timestamp_now();
-
         lcm.publish(options.channel, &msg);
 
+        // also publish the thumbnail
+        if(!options.grayscale)
+            cv::cvtColor(m, m, CV_BGR2GRAY);
+        cv::resize(m, m, cv::Size(640, 480));
+        msg.width = m.cols;
+        msg.height = m.rows;
+        msg.data = cvmat_to_jpeg(m, options.quality);
+        msg.size = msg.data.size();
+        lcm.publish(channel_thumb, &msg);
+        
         usleep(wait_time_ms*1000);
     }
 
