@@ -300,8 +300,7 @@ thumbnail_draw(thumbnail_t* t)
         vector<uint8_t> tmp;
         tmp.assign(msg->data, msg->data + msg->size);
 
-        cv::Mat m;
-        jpeg_to_cvmat(tmp, m, CV_LOAD_IMAGE_COLOR);
+        cv::Mat m = jpeg_to_cvmat(tmp, CV_LOAD_IMAGE_COLOR);
 
         int stride = msg->width*3;
         int buf_size = msg->width*msg->height*3;

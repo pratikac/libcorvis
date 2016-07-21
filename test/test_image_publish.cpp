@@ -29,8 +29,7 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    vector<uint8_t> buf;
-    cvmat_to_jpeg(m, buf, 25);
+    vector<uint8_t> buf = cvmat_to_jpeg(m, 25);
         
     corvis_image_t msg;
     msg.utime = bot_timestamp_now();

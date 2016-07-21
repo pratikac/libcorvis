@@ -17,20 +17,14 @@ static void
 handle(const lcm_recv_buf_t* rbuf, const char* channel,
         const corvis_image_t* msg, void* user)
 {
-    printf("Rec:[%lu]\n", msg->utime);
-
     vector<unsigned char> buf;
     buf.assign(msg->data, msg->data + msg->size);
 
-    Mat m;
-   
-    /*
     vk::Timer t;
     t.start();
-    jpeg_to_cvmat(buf, m);
+    Mat m = jpeg_to_cvmat(buf);
     t.stop();
-    printf("[decode]: %.3f [ms]\n", t.getTime());
-    */
+    printf("[%lu]: %.3f [ms]\n", msg->utime, t.getTime()*1000);
 
     imshow("recv-img", m);
     waitKey(10);

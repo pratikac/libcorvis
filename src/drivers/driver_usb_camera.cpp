@@ -1,6 +1,6 @@
-#include <lcm/lcm.h>
+#include <lcm/lcm-cpp.hpp>
 #include <bot_core/bot_core.h>
-#include <lcmtypes/corvis_image_t.h>
+#include <lcmtypes/corvis/image_t.hpp>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
     if(parse_options(argc, argv))
         return 1;
 
-    lcm_t* lcm = bot_lcm_get_global(NULL);
+    lcm::LCM lcm;
     
     cv::VideoCapture cap(options.idx);
     if(!cap.isOpened())
@@ -82,13 +82,11 @@ int main(int argc, char* argv[])
 
     int wait_time_ms = 1000/(float)options.freq;
 
-    cv::Mat m;
-    vector<uint8_t> buf;
-    corvis_image_t msg;
-    msg.data = NULL;
-    
     while(1)
     {
+        cv::Mat m;
+        corvis::image_t msg;
+        
         bool res = cap.read(m);
         if(!res)
         {
@@ -100,21 +98,17 @@ int main(int argc, char* argv[])
 
         if(options.grayscale)
             cv::cvtColor(m, m, CV_BGR2GRAY);
-        
-        cvmat_to_jpeg(m, buf, options.quality);
+
+        msg.data = cvmat_to_jpeg(m, options.quality);
         msg.width = m.cols;
         msg.height = m.rows;
-
-        msg.data = new uint8_t[buf.size()];
-        msg.size = buf.size();
-        memcpy(msg.data, &(buf[0]), buf.size()*sizeof(uint8_t));
+        msg.size = msg.data.size();
         msg.utime = bot_timestamp_now();
-        delete[] msg.data;
 
-        corvis_image_t_publish(lcm, options.channel, &msg);
+        lcm.publish(options.channel, &msg);
 
         usleep(wait_time_ms*1000);
     }
-    
+
     return 0;
 }
