@@ -1,5 +1,5 @@
 #include <corvis/common.h>
-#include <corvis/config.h>
+#include <corvis/param_utils.h>
 #include <corvis/imgutils.h>
 
 #include <gtk/gtk.h>
@@ -28,7 +28,6 @@ enum
 typedef struct
 {
     lcm_t* lcm;
-    corvis_config_t* config;
 
     BotRenderer renderer;
     BotViewer* viewer;
@@ -229,9 +228,6 @@ renderer_camera_free(BotRenderer* renderer)
 {
     renderer_camera_t* s = (renderer_camera_t*) renderer;
 
-    if(s->config)
-        free(s->config);
-
     g_hash_table_destroy(s->cam_handlers);
     free(s);
 }
@@ -242,9 +238,6 @@ BotRenderer* renderer_camera_new(BotViewer* _v)
 
     s->viewer = _v;
     s->lcm = bot_lcm_get_global(NULL);
-
-    s->config = NULL;
-    //s->config = new corvis_config_t();
 
     s->renderer.draw = renderer_camera_draw;
     s->renderer.destroy = renderer_camera_free;
@@ -260,6 +253,7 @@ BotRenderer* renderer_camera_new(BotViewer* _v)
 
     // subscribe to all thumb images
     corvis_image_t_subscribe(s->lcm, "CAM_.*_THUMB", on_image, s);
+    corvis_image_t_subscribe(s->lcm, "CAM_.*", on_image, s);
 
     g_signal_connect(G_OBJECT(_v), "load-preferences",
             G_CALLBACK(on_load_preferences), s);

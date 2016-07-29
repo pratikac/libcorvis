@@ -20,4 +20,22 @@ vector<unsigned char> cvmat_to_jpeg(const Mat& m, int quality = 95)
     return buf;
 }
 
+void draw_crosshair(Mat& m, Point2f p, int len, Scalar c, int thickness=1)
+{
+    int rows = m.rows, cols = m.cols;
+    Point2f t1 = p, t2 = p;
+
+    t1.x = p.x + len/2;
+    t1.y = p.y;
+    t2.x = p.x - len/2;
+    t2.y = p.y;
+    line(m, t1, t2, c, thickness, 8);
+
+    t1.x = p.x;
+    t1.y = p.y + len/2;
+    t2.x = p.x;
+    t2.y = p.y - len/2;
+    line(m, t1, t2, c, thickness, 8);
+}
+
 #endif

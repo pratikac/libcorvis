@@ -10,12 +10,13 @@
 typedef struct options_t
 {
     char* channel;
-    int mode, quality;
+    int mode, grayscale, quality;
 
     options_t()
     {
         channel = (char*)"CAMERA0";
         mode = 1;
+        grayscale = 1;
         quality = 95;
     }
 }options_t;
@@ -27,6 +28,7 @@ int parse_options(int argc, char* argv[])
     GOptionEntry entries[] = {
         {"channel",     'c', 0,     G_OPTION_ARG_STRING,    &options.channel,   "LCM channel name",             NULL},
         {"mode",        'm', 0,     G_OPTION_ARG_INT,       &options.mode,      "Mode, defaulut: 1, Full = 0, Half = 1", NULL},
+        {"grayscale",   'g', 0,     G_OPTION_ARG_INT,       &options.grayscale, "Grayscale, defaulut: 1", NULL},
         {"quality",     'q', 0,     G_OPTION_ARG_INT,       &options.quality,   "Quality, default: 95",         NULL},
         {NULL}
     };
@@ -46,8 +48,8 @@ int parse_options(int argc, char* argv[])
         return 1;
     }
     
-    printf("Initializing pointgrey camera: mode: [%d] on %s, quality: %d\n",
-            options.mode, options.channel, options.quality);
+    printf("Initializing pointgrey camera: mode: [%d], grayscale: %d on %s, quality: %d\n",
+            options.mode, options.grayscale, options.channel, options.quality);
     
     return 0;
 }
@@ -159,6 +161,9 @@ int main(int argc, char* argv[])
                                 CV_8UC3,
                                 rgb_image.GetData(),
                                 row_bytes);
+            if(options.grayscale)
+                cv::cvtColor(m, m, CV_BGR2GRAY);
+
             msg.data = cvmat_to_jpeg(m, options.quality);
             msg.size = msg.data.size();
             

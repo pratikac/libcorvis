@@ -27,12 +27,12 @@ void corvis_get_calibration_atan(BotParam* p,
     {
         char* t2 = strdup(t1);
         sprintf(t2, "%s.width", t2);
-        bot_param_get_double_or_fail(p, t2, sz[0]);
+        sz[0] = bot_param_get_double_or_fail(p, t2);
         free(t2);
 
         t2 = strdup(t1);
         sprintf(t2, "%s.height", t2);
-        bot_param_get_double_or_fail(p, t2, sz[1]);
+        sz[1] = bot_param_get_double_or_fail(p, t2);
         free(t2);
 
         t2 = strdup(t1);

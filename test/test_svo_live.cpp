@@ -2,6 +2,10 @@
 #include <svo/frame_handler_mono.h>
 #include <svo/map.h>
 #include <svo/frame.h>
+#include <svo/feature_detection.h>
+#include <svo/depth_filter.h>
+#include <svo/feature.h>
+
 #include <vikit/math_utils.h>
 #include <vikit/vision.h>
 #include <vikit/abstract_camera.h>
@@ -28,14 +32,21 @@ class node_t
 
         vk::AbstractCamera* cam;
         FrameHandlerMono* h;
-
+        
         node_t()
         {
-            cam = new vk::ATANCamera(1920, 1080, 0.976421, 1.31701, 0.514889, 0.535875, 0);
+            cam = new vk::PinholeCamera(
+                        1024, 768,
+                        574.9515, 574.6672,
+                        530.0537, 397.5126,
+                        -0.3565, 0.2036, -0.0693, 0, 0);
+
             h = new FrameHandlerMono(cam);
             h->start();
 
             lcm.subscribe("CAM_MAIN", &node_t::on_image, this);
+            
+            cv::namedWindow("debug", CV_WINDOW_AUTOSIZE);
         }
         ~node_t()
         {
@@ -43,6 +54,22 @@ class node_t
                 delete h;
             if(cam)
                 delete cam;
+        }
+
+        void show_tracker(cv::Mat& m)
+        {
+            svo::FramePtr frame(new svo::Frame(cam, m, 0.0));
+
+            svo::feature_detection::FastDetector fast_detector(m.cols, m.rows, 50, 3);
+            svo::Features fts;
+            for(int i=0; i<10; i++)
+                fast_detector.detect(frame.get(), frame->img_pyr_, svo::Config::triangMinCornerScore(), fts);
+
+            for(auto& i : fts)
+                draw_crosshair(m, cv::Point2f(i->px[0], i->px[1]), 4*(i->level+1), cv::Scalar(255,255,255), 1);
+
+            cv::imshow("debug", m);
+            cv::waitKey(10);
         }
 
         void on_image(const lcm::ReceiveBuffer*, const std::string&,
@@ -54,8 +81,8 @@ class node_t
             cv::Mat m = jpeg_to_cvmat(msg->data);
             //printf("Recv: [%dx%d]\n", m.cols, m.rows);
 
+            /*
             h->addImage(m, t);
-
             if(h->lastFrame())
             {
                 printf("idx: %d, #features: %d, dt: %.3f [ms]\n",
@@ -67,6 +94,9 @@ class node_t
                 //cout << h->lastFrame()->T_f_w_.inverse().rotationMatrix() << endl;
                 cout << h->lastFrame()->T_f_w_.inverse().translation().transpose() << endl;
             }
+            */
+
+            show_tracker(m);
         }
 };
 
