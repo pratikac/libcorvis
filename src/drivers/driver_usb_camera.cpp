@@ -97,6 +97,7 @@ int main(int argc, char* argv[])
         }
 
         corvis::image_t msg;
+        msg.camera_name = "LOGITECH_USB";
         msg.device_utime = bot_timestamp_now();
 
         if(options.grayscale)

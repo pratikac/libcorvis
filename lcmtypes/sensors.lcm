@@ -14,8 +14,16 @@ struct ins_t
     double rel_alt;
 }
 
+struct image_type_t
+{
+    const int8_t raw = 1;
+    const int8_t jpeg = 2;
+}
+
 struct image_t
 {
+    string camera_name;
+
     int64_t utime;
     int64_t device_utime;
 

@@ -8,4 +8,14 @@ add_executable(driver_imu
 target_link_libraries(driver_imu
     lcmtypes_corvis)
 
-pods_install_executables(driver_usb_camera driver_imu)
+find_library(FLYCAPTURE2 flycapture)
+add_executable(driver_pointgrey
+    driver_pointgrey.cpp)
+target_link_libraries(driver_pointgrey
+    lcmtypes_corvis
+    ${FLYCAPTURE2})
+
+pods_install_executables(
+    driver_usb_camera
+    driver_imu
+    driver_pointgrey)
