@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 
     FlyCapture2::GigEProperty prop2;
     prop2.propType = FlyCapture2::PACKET_DELAY;
-    prop2.value = 4000;
+    prop2.value = 400;
     gcam.SetGigEProperty(&prop2);
     
     FlyCapture2::BusManager bus_manager;

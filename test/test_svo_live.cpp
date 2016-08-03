@@ -1,3 +1,5 @@
+#define SVO_DEBUG_OUTPUT
+
 #include <svo/config.h>
 #include <svo/frame_handler_mono.h>
 #include <svo/map.h>
@@ -65,8 +67,9 @@ class node_t
             for(int i=0; i<10; i++)
                 fast_detector.detect(frame.get(), frame->img_pyr_, svo::Config::triangMinCornerScore(), fts);
 
+            cv::cvtColor(m, m, CV_GRAY2BGR);
             for(auto& i : fts)
-                draw_crosshair(m, cv::Point2f(i->px[0], i->px[1]), 4*(i->level+1), cv::Scalar(255,255,255), 1);
+                draw_crosshair(m, cv::Point2f(i->px[0], i->px[1]), 4*(i->level+1), cv::Scalar(0,0,255), 1);
 
             cv::imshow("debug", m);
             cv::waitKey(10);
@@ -75,13 +78,11 @@ class node_t
         void on_image(const lcm::ReceiveBuffer*, const std::string&,
                 const corvis::image_t* msg)
         {
-            int64_t tmp = msg->utime - 1468658014000000; 
-            double t = (tmp)/(1e6);
+            double t = (msg->device_utime)/(1e6);
 
             cv::Mat m = jpeg_to_cvmat(msg->data);
             //printf("Recv: [%dx%d]\n", m.cols, m.rows);
 
-            /*
             h->addImage(m, t);
             if(h->lastFrame())
             {
@@ -94,7 +95,6 @@ class node_t
                 //cout << h->lastFrame()->T_f_w_.inverse().rotationMatrix() << endl;
                 cout << h->lastFrame()->T_f_w_.inverse().translation().transpose() << endl;
             }
-            */
 
             show_tracker(m);
         }

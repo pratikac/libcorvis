@@ -58,7 +58,7 @@ BenchmarkNode::~BenchmarkNode()
 
 void BenchmarkNode::runFromFolder()
 {
-    for(int img_id = 2; img_id < 188; ++img_id)
+    for(int img_id = 2; img_id < 188; img_id += 2)
     {
         // load image
         std::stringstream ss;
