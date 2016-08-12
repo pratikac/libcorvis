@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
             corvis::image_t msg;
             msg.camera_name = "BFLY-PGE-31S4C-C";
             msg.device_utime = bot_timestamp_now();
-            msg.type = corvis::image_type_t::jpeg;
+            msg.encoding = corvis::image_type_t::jpeg;
             
             msg.width = raw_image.GetCols();
             msg.height = raw_image.GetRows();

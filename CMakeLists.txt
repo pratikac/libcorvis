@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.1)
 
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
 set(POD_NAME corvis)
 
 if(CMAKE_INSTALL_PREFIX STREQUAL "/usr/local")

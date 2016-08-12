@@ -58,5 +58,5 @@ struct pointcloud_t
     int32_t size;
     double points[size][3];
 
-    pointcloud_type_t type;
+    int8_t encoding;
 }

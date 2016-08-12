@@ -272,7 +272,7 @@ function(lcmtypes_build_java)
 
     # add a rule to build the .class files from from the .java files
     add_custom_command(OUTPUT ${_lcmtypes_class_files}
-        COMMAND ${JAVA_COMPILE} -source 1.6 -target 1.8 -cp ${java_classpath} ${_lcmtypes_java_files} 
+        COMMAND ${JAVA_COMPILE} -source 1.8 -target 1.8 -cp ${java_classpath} ${_lcmtypes_java_files} 
         DEPENDS ${_lcmtypes_java_files} VERBATIM)
 
     # add a rule to build a .jar file from the .class files
@@ -321,6 +321,8 @@ function(lcmtypes_build_python)
 endfunction()
 
 function(lcmtypes_build_lua)
+    string(REGEX REPLACE "[^a-zA-Z0-9]" "_" __sanitized_project_name "${PROJECT_NAME}")
+    
     lcmtypes_get_types(_lcmtypes)
     list(LENGTH _lcmtypes _num_lcmtypes)
     if(_num_lcmtypes EQUAL 0)
@@ -339,8 +341,9 @@ function(lcmtypes_build_lua)
     
     file(GLOB_RECURSE _lcmtypes_lua_files  ${_lcmtypes_lua_dir}/*.lua)
     
-    install(FILES  ${_lcmtypes_lua_files} DESTINATION include/lcmtypes/lua)
+    install(FILES  ${_lcmtypes_lua_files} DESTINATION share/lua/${__sanitized_project_name})
     add_clean_dir(${_lcmtypes_lua_dir})
+    unset(__sanitized_project_name)
 endfunction()
 
 

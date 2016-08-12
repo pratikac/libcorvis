@@ -27,7 +27,7 @@ struct image_t
     int64_t utime;
     int64_t device_utime;
 
-    int32_t type;
+    int32_t encoding;
     int32_t width, height;
 
     int32_t size;
