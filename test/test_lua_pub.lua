@@ -40,7 +40,7 @@ for i=1,10000000 do
     
     local img = image_t:new()
     img.utime = bot_timestamp_now()
-    img.size = 7999 + 1
+    img.size = 10 + 1
     img.data = {}
     for i=1,img.size do
         img.data[i] = 1

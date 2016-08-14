@@ -12,6 +12,7 @@ end
 local function on_image(c, d)
     local msg = image_t.decode(d)
     print(msg.utime)
+    print(torch.ByteTensor(msg.data))
 end
 
 lc:subscribe('CAMERA.*', on_image)
