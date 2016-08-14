@@ -4,7 +4,9 @@ add_executable(corvis-viewer
     viewer.cpp
     view_menu.cpp
     udp_util.cpp
-    renderer_camera.cpp)
+    renderer_camera.cpp
+    renderer_pointcloud.cpp
+    )
 
 pods_use_pkg_config_packages(corvis-viewer ${BOT_VIS_PACKAGES})
 target_link_libraries(corvis-viewer

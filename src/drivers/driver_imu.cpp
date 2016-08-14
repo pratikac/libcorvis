@@ -15,7 +15,7 @@ typedef struct options_t
     options_t()
     {
         channel = (char*)"IMU";
-        freq = 30;
+        freq = 100;
     }
 }options_t;
 
@@ -25,7 +25,7 @@ int parse_options(int argc, char* argv[])
 {
     GOptionEntry entries[] = {
         {"channel",     'c', 0,     G_OPTION_ARG_STRING,    &options.channel,   "LCM channel name",             NULL},
-        {"freq",        'f', 0,     G_OPTION_ARG_INT,       &options.freq,      "Frequency, default: 30",       NULL},
+        {"freq",        'f', 0,     G_OPTION_ARG_INT,       &options.freq,      "Frequency, default: 100",      NULL},
         {NULL}
     };
     GError* error = NULL;

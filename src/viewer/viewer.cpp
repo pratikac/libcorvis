@@ -13,6 +13,7 @@
 #include "view_menu.h"
 
 void setup_renderer_camera(BotViewer*, int);
+void setup_renderer_pointcloud(BotViewer* v, int p);
 
 static int
 logplayer_remote_on_key_press(BotViewer *viewer, BotEventHandler *ehandler,
@@ -71,6 +72,7 @@ int main(int argc, char *argv[])
     bot_frames_add_renderer_to_viewer(viewer, 1, frames);
 
     setup_renderer_camera(viewer, 1);
+    setup_renderer_pointcloud(viewer, 1);
 
     // logplayer controls
     BotEventHandler *ehandler = (BotEventHandler*) calloc(1, sizeof(BotEventHandler));
@@ -92,6 +94,11 @@ int main(int argc, char *argv[])
 
     bot_viewer_unref(viewer);
     bot_glib_mainloop_detach_lcm(lcm);
+
+    if(param)
+        bot_param_destroy(param);
+    if(frames)
+        bot_frames_destroy(frames);
 
     return 0;
 }

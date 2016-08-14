@@ -389,7 +389,7 @@ on_thumbnail_param_widget_changed(BotGtkParamWidget* pw, const char *param,
         gtk_widget_hide (GTK_WIDGET(t->gl_area));
 
     t->is_uploaded = 0;
-    bot_viewer_request_redraw (t->renderer->viewer);
+    bot_viewer_request_redraw(t->renderer->viewer);
 }
 
 static void

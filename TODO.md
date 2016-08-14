@@ -1,2 +1,2 @@
-Camera panel for corvis-viewer
-jpeg compress / serialize to display
+IMU integration routines
+optical flow and matching

@@ -347,29 +347,6 @@ function(lcmtypes_build_lua)
 endfunction()
 
 
-function (lcmtypes_build_csharp)
-    lcmtypes_get_types(_lcmtypes)
-    list(LENGTH _lcmtypes _num_lcmtypes)
-    if(_num_lcmtypes EQUAL 0)
-        return()
-    endif()
-
-    set(_lcmtypes_csharp_dir ${CMAKE_BINARY_DIR}/lcmgen/csharp)
-    
-    # configure time
-    execute_process(COMMAND mkdir -p ${_lcmtypes_csharp_dir})
-    execute_process(COMMAND lcm-gen --lazy --csharp ${_lcmtypes} --csharp-path ${_lcmtypes_csharp_dir})
-    
-    # compile time
-    add_custom_target(lcmgen_csharp ALL
-        COMMAND sh -c 'lcm-gen --lazy --csharp ${_lcmtypes} --csharp-path ${_lcmtypes_csharp_dir}')
-    
-    file(GLOB_RECURSE _lcmtypes_csharp_files  ${_lcmtypes_csharp_dir}/*.cs)
-    
-    install(FILES  ${_lcmtypes_csharp_files} DESTINATION include/lcmtypes/csharp)
-    add_clean_dir(${_lcmtypes_csharp_dir})
-endfunction()
-
 function(lcmtypes_install_types)
     lcmtypes_get_types(_lcmtypes)
     list(LENGTH _lcmtypes _num_lcmtypes)
@@ -394,7 +371,6 @@ macro(lcmtypes_build)
     lcmtypes_build_java()
     lcmtypes_build_python()
     lcmtypes_build_lua()
-    #lcmtypes_build_csharp()
 
     lcmtypes_install_types()
 endmacro()
